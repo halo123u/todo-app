@@ -18,7 +18,7 @@ const userController = {
     }
     ,
     createUser : (req,res) => {
-        let body = _.pick(req.body,['email','password']);
+        let body = _.pick(req.body,['email','password','gamertag']);
         const new_User = new User(body);
         new_User.save().then(()=> {
             return new_User.generateAuthToken();

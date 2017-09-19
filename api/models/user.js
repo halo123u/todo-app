@@ -19,6 +19,10 @@ const UserSchema =  new Schema({
         }
 
     },
+    gamertag:{
+        type :String,
+        required: true,
+    },
     password: {
         type: String,
         require: true,
@@ -62,7 +66,7 @@ UserSchema.methods = {
     toJSON: function () {
      const user = this;
      const userObject = user.toObject();
-     return _.pick(userObject, ['_id', 'email']);   
+     return _.pick(userObject, ['_id', 'email', 'gamertag']);   
     },
     removeToken : function (token) {
         const user = this;

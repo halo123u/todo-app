@@ -9,7 +9,8 @@ class App extends Component {
       redirect :false,
       userId : null,
       auth : false,
-      email : null
+      email : null,
+      gamertag : null,
     }
   }
 
@@ -22,12 +23,35 @@ class App extends Component {
       this.setState({
         auth: res.data.auth,
         userId : res.data.user._id,
-        email : res.data.user.email 
+        email : res.data.user.email,
+        gamertag :res.data.user.gamertag
       });
     }).catch(err=>{
       console.log(err);
     });
     }
+  }
+
+  handleSignUp = (e, email, gamertag, password)=>{
+    e.preventDefault();
+    console.log(gamertag);
+    axios.post('/users',{
+      email,
+      gamertag,
+      password 
+    }).then(res => {
+      console.log(res);
+      this.setState({
+        auth: res.data.auth,
+        userId : res.data._id,
+        email : res.data.email,
+        gamertag : res.data.gamertag  
+      });
+      console.log(res.headers['x-auth']);
+      localStorage.setItem('token',res.headers[`x-auth`]);
+    }).catch(err=>{
+      console.log(err);
+    });
   }
   
 
@@ -64,7 +88,7 @@ class App extends Component {
     return (
       <div className="App">
         {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
-        <Login login={this.handleLoginSubmit}/>
+        <Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>
       </div>
     );
   }
