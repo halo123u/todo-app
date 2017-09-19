@@ -23,7 +23,8 @@ const userController = {
         new_User.save().then(()=> {
             return new_User.generateAuthToken();
         }).then(token=>{
-            res.header('x-auth',token ).send(new_User);
+            res.header('x-auth',token ).send({user:new_User,
+                auth : true});
 
         }).catch(err=>{
             console.log(err);

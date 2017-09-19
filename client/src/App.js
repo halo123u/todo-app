@@ -43,9 +43,9 @@ class App extends Component {
       console.log(res);
       this.setState({
         auth: res.data.auth,
-        userId : res.data._id,
-        email : res.data.email,
-        gamertag : res.data.gamertag  
+        userId : res.data.user._id,
+        email : res.data.user.email,
+        gamertag : res.data.user.gamertag  
       });
       console.log(res.headers['x-auth']);
       localStorage.setItem('token',res.headers[`x-auth`]);
@@ -65,7 +65,8 @@ class App extends Component {
       this.setState({
         auth: res.data.auth,
         userId : res.data.user._id,
-        email : res.data.user.email 
+        email : res.data.user.email, 
+        gamertag: res.data.user.gamertag
       });
       console.log(res.headers['x-auth']);
       localStorage.setItem('token',res.headers[`x-auth`]);
@@ -79,6 +80,12 @@ class App extends Component {
     let header = { 'x-auth' : token };
     axios.delete('/users/me/token',{headers : header} ).then(res=>{
       console.log(res)
+      this.setState({
+        auth: false,
+        userId : null,
+        email : null, 
+        gamertag: null
+      })
       localStorage.removeItem('token');
     }).catch(err=>{
       console.log(err);
