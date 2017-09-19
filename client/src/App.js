@@ -49,10 +49,21 @@ class App extends Component {
       console.log(err);
     });
   }
+  handleLogOut = ()=>{
+    console.log('this logout works')
+    let token = localStorage.getItem('token');
+    let header = { 'x-auth' : token };
+    axios.delete('/users/me/token',{headers : header} ).then(res=>{
+      console.log(res)
+      localStorage.removeItem('token');
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
   render() {
     return (
       <div className="App">
-        {/* <TodoList /> */}
+        {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
         <Login login={this.handleLoginSubmit}/>
       </div>
     );
