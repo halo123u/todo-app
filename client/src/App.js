@@ -7,12 +7,14 @@ import {
 
 import TodoList from './components/TodoList';
 import Login from './components/Login';
+import DashBoard from './components/Dashboard';
 import axios from 'axios';
 class App extends Component {
   constructor(){
     super();
     this.state ={
       redirect :false,
+      currentPage: '/',
       userId : null,
       auth : false,
       email : null,
@@ -38,6 +40,18 @@ class App extends Component {
     }
   }
 
+  componentWillUpdate = (prevState, nextState) => {
+		if(nextState.redirect){
+			this.setState({
+				redirect: false,
+				currentPage: '/'
+			});
+			return true;
+		}else{
+			return false
+		}
+	}
+
   handleSignUp = (e, email, gamertag, password)=>{
     e.preventDefault();
     console.log(gamertag);
@@ -51,10 +65,13 @@ class App extends Component {
         auth: res.data.auth,
         userId : res.data.user._id,
         email : res.data.user.email,
-        gamertag : res.data.user.gamertag  
+        gamertag : res.data.user.gamertag,
+        redirect: true,
+        currentPage: '/dashboard'  
       });
       console.log(res.headers['x-auth']);
       localStorage.setItem('token',res.headers[`x-auth`]);
+
     }).catch(err=>{
       console.log(err);
     });
@@ -72,7 +89,9 @@ class App extends Component {
         auth: res.data.auth,
         userId : res.data.user._id,
         email : res.data.user.email, 
-        gamertag: res.data.user.gamertag
+        gamertag: res.data.user.gamertag,
+        redirect :true,
+        currentPage: '/dashboard' 
       });
       console.log(res.headers['x-auth']);
       localStorage.setItem('token',res.headers[`x-auth`]);
@@ -90,7 +109,9 @@ class App extends Component {
         auth: false,
         userId : null,
         email : null, 
-        gamertag: null
+        gamertag: null,
+        redirect: true,
+        currentPage: '/'
       })
       localStorage.removeItem('token');
     }).catch(err=>{
@@ -102,8 +123,10 @@ class App extends Component {
       <Router>
         <div className="App">
           {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
+          {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}
           <Switch>
-            <Route exact path='/'component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
+            <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
+            <Route exact path='/dashboard' component={DashBoard}/>
           </Switch>
         </div>
       </Router>
