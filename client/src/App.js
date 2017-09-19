@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+
+import {
+  BrowserRouter as Router,
+  Route, Redirect, Switch
+} from 'react-router-dom';
+
 import TodoList from './components/TodoList';
 import Login from './components/Login';
 import axios from 'axios';
@@ -93,10 +99,14 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
-        <Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>
-      </div>
+      <Router>
+        <div className="App">
+          {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
+          <Switch>
+            <Route exact path='/'component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
