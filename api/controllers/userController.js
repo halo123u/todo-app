@@ -12,7 +12,8 @@ const userController = {
         })
     },
     getUserInfo : (req,res)=>{
-        res.send(req.user);
+        res.send({user :req.user,
+            auth: true});
         
     }
     ,
@@ -33,7 +34,8 @@ const userController = {
         let body = _.pick(req.body,['email', 'password']);
         User.findByCredentials(body.email,body.password).then((user)=>{
             user.generateAuthToken().then(token => {
-                res.header('x-auth',token ).send(user);
+                res.header('x-auth',token ).send({user,
+                auth: true});
             })
         }).catch(e=>{
             res.status(400).send();
@@ -42,7 +44,7 @@ const userController = {
     signOut : (req,res)=>{
         console.log(req.token);
         req.user.removeToken(req.token).then(()=>{
-            res.status(200).send();
+            res.status(200).send({message: 'You\'ve succesfully logged out'});
         }, () =>{
             res.status(400).send();
         })
