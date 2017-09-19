@@ -126,7 +126,7 @@ class App extends Component {
           {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}
           <Switch>
             <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
-            <Route exact path='/dashboard' component={DashBoard}/>
+            <Route exact path='/dashboard' component={()=><DashBoard gamertag={this.state.gamertag} userId={this.state.userId}/>}/>
           </Switch>
         </div>
       </Router>

@@ -23,5 +23,9 @@ app.use('/tasks', tasksRoutes);
 const userRoutes = require('./api/routes/userRoutes');
 app.use('/users', userRoutes);
 
+const haloApiRoutes = require('./api/routes/haloApiRoutes');
+app.use('/haloApi', haloApiRoutes);
+
+
 
 console.log('todo list RESTful API server started on: l' + port);
