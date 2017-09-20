@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const Task = require('./api/models/todoListModel');
 const User = require('./api/models/user');
 const bodyParse = require('body-parser');
-
+require("dotenv").config();
 // const Promise = require('bluebird');
 // Promise.promisifyAll(mongoose);
 mongoose.connect('mongodb://localhost/Tododb');
