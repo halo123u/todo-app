@@ -11,7 +11,8 @@ class DashBoard extends Component{
     }
 
     componentDidMount() {
-        axios.get(`/haloApi/${this.props.gamertag}`).then(res=>{
+        let header = { 'x-auth' : this.props.token };
+        axios.get(`/haloApi`, {headers: header}).then(res=>{
             console.log(res);
         })
     }

@@ -19,6 +19,7 @@ class App extends Component {
       auth : false,
       email : null,
       gamertag : null,
+      token  :null
     }
   }
 
@@ -32,7 +33,8 @@ class App extends Component {
         auth: res.data.auth,
         userId : res.data.user._id,
         email : res.data.user.email,
-        gamertag :res.data.user.gamertag
+        gamertag :res.data.user.gamertag,
+        token : token
       });
     }).catch(err=>{
       console.log(err);
@@ -66,12 +68,14 @@ class App extends Component {
         userId : res.data.user._id,
         email : res.data.user.email,
         gamertag : res.data.user.gamertag,
+        token : res.headers['x-auth'],
         redirect: true,
         currentPage: '/dashboard'  
+      },()=>{
+        localStorage.setItem('token',res.headers[`x-auth`]);
       });
-      console.log(res.headers['x-auth']);
-      localStorage.setItem('token',res.headers[`x-auth`]);
-
+      console.log(localStorage.getItem('token'));
+      // localStorage.setItem('token',res.headers[`x-auth`]);
     }).catch(err=>{
       console.log(err);
     });
@@ -90,6 +94,7 @@ class App extends Component {
         userId : res.data.user._id,
         email : res.data.user.email, 
         gamertag: res.data.user.gamertag,
+        token : res.headers['x-auth'],
         redirect :true,
         currentPage: '/dashboard' 
       });
@@ -110,6 +115,7 @@ class App extends Component {
         userId : null,
         email : null, 
         gamertag: null,
+        token : null,
         redirect: true,
         currentPage: '/'
       })
@@ -126,7 +132,7 @@ class App extends Component {
           {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}
           <Switch>
             <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
-            <Route exact path='/dashboard' component={()=><DashBoard gamertag={this.state.gamertag} userId={this.state.userId}/>}/>
+            <Route exact path='/dashboard' component={()=><DashBoard gamertag={this.state.gamertag} token = {this.state.token} userId={this.state.userId}/>}/>
           </Switch>
         </div>
       </Router>
